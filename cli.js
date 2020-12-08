@@ -268,7 +268,9 @@ const start = () => {
     ]);
 
     console.log(table.toString());
+
+    return totalPasses === (totalTests) // if any tests failed return false
   });
 };
 
-start();
+return start();
