@@ -5,6 +5,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const yargs = require('yargs');
 const { isYarn } = require('is-npm');
+const glob = require('glob');
 
 const WEIGHTS_JSON = 'cypress/parallel-weights.json';
 
@@ -41,7 +42,7 @@ if (!CY_SCRIPT) {
 }
 
 let N_THREADS = argv.threads ? argv.threads : 4;
-const SPEC_FILES_PATH = argv.specsDir ? argv.specsDir : 'cypress/integration';
+const SPEC_FILES_PATH = argv.specsDir ? argv.specsDir : 'cypress/integration/*.test.*';
 const WRITE_WEIGHTS_FILE = argv.weightFile ? argv.weightFile : false;
 const CY_SCRIPT_ARGS = argv.args ? argv.args.split(' ') : [];
 
@@ -57,12 +58,7 @@ const COLORS = [
 ];
 
 const getAllFiles = dir =>
-  fs.readdirSync(dir).reduce((files, file) => {
-    const name = path.join(dir, file);
-    const isDirectory = fs.statSync(name).isDirectory();
-    if (isDirectory) return [...files, ...getAllFiles(name)];
-    return [...files, name];
-  }, []);
+  glob.sync(specPattern)
 
 const logger = function(c) {
   const color = c;
