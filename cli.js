@@ -57,7 +57,7 @@ const COLORS = [
   '\x1b[40m'
 ];
 
-const getAllFiles = dir =>
+const getAllFiles = specPattern =>
   glob.sync(specPattern)
 
 const logger = function(c) {
